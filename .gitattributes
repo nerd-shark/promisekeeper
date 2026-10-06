@@ -1,0 +1,22 @@
+# Normalize line endings across all platforms.
+# Text files are stored with LF in the repo; Git handles the working-copy
+# conversion. This keeps diffs clean regardless of who clones on which OS.
+* text=auto eol=lf
+
+# Explicit text types (defensive; covered by text=auto but spelled out)
+*.rs      text eol=lf
+*.toml    text eol=lf
+*.md      text eol=lf
+*.json    text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.lock    text eol=lf
+
+# Binary types: never normalize
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.webp    binary
+*.pdf     binary
+*.ico     binary
