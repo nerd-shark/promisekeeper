@@ -1,0 +1,9 @@
+[package]
+name = "promise-taste"
+version = "0.1.0"
+edition = "2021"
+description = "Part 1 taste: a promise moving through its lifecycle"
+
+[[bin]]
+name = "promise-taste"
+path = "src/main.rs"

@@ -1,0 +1,13 @@
+# Rust build output
+/target
+**/target
+
+# Cargo lock is committed for binaries; keep it. (No ignore.)
+
+# Backup / editor cruft
+*.bak
+*~
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
