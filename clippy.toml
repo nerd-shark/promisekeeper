@@ -1,0 +1,3 @@
+# Clippy configuration for the PromiseKeeper teaching repo.
+# Teaching code favors clarity; keep cognitive complexity reasonable but not punishing.
+cognitive-complexity-threshold = 30

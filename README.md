@@ -41,6 +41,21 @@ cargo run
 Part 1: *Build a Promise Engine for AI Agents in Rust (Why This, Why Rust)*
 (Links to each article are added as they publish.)
 
+## Code standards
+
+Every part follows the same conventions, enforced by config at the repo root:
+
+- **Formatting**: `cargo fmt` (see `rustfmt.toml`, stable-only options, 100-column width).
+- **Linting**: `cargo clippy -- -D warnings` must pass (see `clippy.toml`).
+- **Editors**: `.editorconfig` keeps whitespace and line endings consistent.
+
+Run both from inside any part directory:
+
+```bash
+cargo fmt --check
+cargo clippy -- -D warnings
+```
+
 ## License
 
 Licensed under the [MIT License](LICENSE).
