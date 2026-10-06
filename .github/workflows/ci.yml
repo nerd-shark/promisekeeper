@@ -1,0 +1,65 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  CARGO_TERM_COLOR: always
+  RUSTFLAGS: "-D warnings"
+
+jobs:
+  # Discover every part-*/ directory that contains a Cargo.toml, so new chapters
+  # are picked up automatically with no workflow edits.
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      parts: ${{ steps.find.outputs.parts }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: find
+        shell: bash
+        run: |
+          parts=$(find . -maxdepth 2 -name Cargo.toml -path './part-*' -printf '%h\n' \
+            | sed 's|^\./||' | sort | jq -R -s -c 'split("\n") | map(select(length > 0))')
+          echo "parts=$parts" >> "$GITHUB_OUTPUT"
+          echo "Discovered parts: $parts"
+
+  check:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        part: ${{ fromJson(needs.discover.outputs.parts) }}
+    name: check (${{ matrix.part }})
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: ${{ matrix.part }}
+
+      - name: Format check
+        working-directory: ${{ matrix.part }}
+        run: cargo fmt --check
+
+      - name: Clippy
+        working-directory: ${{ matrix.part }}
+        run: cargo clippy --all-targets -- -D warnings
+
+      - name: Build
+        working-directory: ${{ matrix.part }}
+        run: cargo build --verbose
+
+      - name: Test
+        working-directory: ${{ matrix.part }}
+        run: cargo test --verbose
