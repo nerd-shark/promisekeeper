@@ -1,0 +1,9 @@
+[package]
+name = "promise-ownership"
+version = "0.1.0"
+edition = "2021"
+description = "Part 2: ownership and borrowing, who owns an in-flight promise"
+
+[[bin]]
+name = "promise-ownership"
+path = "src/main.rs"
