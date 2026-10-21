@@ -1,0 +1,28 @@
+# Part 4: the cargo workspace, now with the error-handling crates.
+#
+# PromiseKeeper is multi-crate by Part 12, so the workspace was set up back in
+# Part 3 even though two crates was overkill then. This chapter adds two
+# dependencies and splits the job between them deliberately:
+#
+#   thiserror -> typed, structured errors in the `promisekeeper` library crate.
+#   anyhow    -> friendly, contextual error reporting at the `pk` CLI boundary.
+#
+# That split is the practical takeaway of the chapter. Libraries hand callers
+# errors they can match on; the binary turns those errors into something a
+# human reads on stderr.
+[workspace]
+resolver = "2"
+members = ["promisekeeper", "pk"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+license = "MIT"
+
+# Declared once, inherited by the members with `workspace = true`. One place to
+# bump a version.
+[workspace.dependencies]
+uuid = { version = "1", features = ["v4"] }
+clap = { version = "4", features = ["derive"] }
+thiserror = "2"
+anyhow = "1"

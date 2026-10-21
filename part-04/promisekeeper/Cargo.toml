@@ -1,0 +1,14 @@
+[package]
+name = "promisekeeper"
+description = "Part 4: the PromiseKeeper domain library (promise types + typed errors)"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+uuid.workspace = true
+# thiserror lives in the library: it derives the boilerplate for a typed error
+# enum (Display, Error, the source chain) without pulling a reporting style
+# into the domain. The library says what went wrong; it does not decide how the
+# message is printed.
+thiserror.workspace = true

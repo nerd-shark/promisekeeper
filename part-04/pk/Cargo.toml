@@ -1,0 +1,18 @@
+[package]
+name = "pk"
+description = "Part 4: the pk command-line interface for PromiseKeeper"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "pk"
+path = "src/main.rs"
+
+[dependencies]
+promisekeeper = { path = "../promisekeeper" }
+clap.workspace = true
+# anyhow lives at the binary boundary, not in the library. It carries any error
+# plus human-readable context and prints a tidy report on exit. The CLI is the
+# right place for "friendly message for a person"; the library stays typed.
+anyhow.workspace = true
