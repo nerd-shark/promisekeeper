@@ -36,6 +36,13 @@ cd part-01
 cargo run
 ```
 
+From Part 3 on, a chapter can be a cargo **workspace** with more than one crate. Those run the same way, you just name the binary:
+
+```bash
+cd part-03
+cargo run -p pk -- submit --agent researcher --task "summarize the Q3 10-K filings"
+```
+
 ## The series
 
 Part 1: *Build a Promise Engine for AI Agents in Rust (Why This, Why Rust)*

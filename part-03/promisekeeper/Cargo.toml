@@ -1,0 +1,9 @@
+[package]
+name = "promisekeeper"
+description = "Part 3: the PromiseKeeper domain library (promise types)"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+uuid.workspace = true

@@ -1,0 +1,19 @@
+# Part 3: the cargo workspace.
+#
+# PromiseKeeper is multi-crate by Part 12, so we set up the workspace now,
+# even though two crates is overkill today. Later chapters slot in as new
+# members here instead of forcing a restructure.
+[workspace]
+resolver = "2"
+members = ["promisekeeper", "pk"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+license = "MIT"
+
+# Dependencies are declared once at the workspace level and inherited by the
+# member crates with `workspace = true`. One place to bump a version.
+[workspace.dependencies]
+uuid = { version = "1", features = ["v4"] }
+clap = { version = "4", features = ["derive"] }

@@ -1,0 +1,14 @@
+[package]
+name = "pk"
+description = "Part 3: the pk command-line interface for PromiseKeeper"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "pk"
+path = "src/main.rs"
+
+[dependencies]
+promisekeeper = { path = "../promisekeeper" }
+clap.workspace = true
