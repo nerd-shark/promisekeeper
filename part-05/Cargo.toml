@@ -1,0 +1,29 @@
+# Part 5: the cargo workspace, unchanged in shape from Part 4.
+#
+# This chapter adds no new dependencies. Retry, backoff, and backpressure are
+# all built from the standard library plus the typed errors from Part 4. The
+# jitter source is a tiny deterministic PRNG defined in the library, not the
+# `rand` crate, so the policy tests are reproducible and the chapter stays
+# honest about randomness: jitter needs to be *unpredictable across attempts*,
+# not cryptographically random, and a seeded generator the tests can pin is the
+# right tool for a teaching build.
+#
+# The thiserror / anyhow split from Part 4 carries forward:
+#   thiserror -> typed, structured errors in the `promisekeeper` library crate.
+#   anyhow    -> friendly, contextual error reporting at the `pk` CLI boundary.
+[workspace]
+resolver = "2"
+members = ["promisekeeper", "pk"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+license = "MIT"
+
+# Declared once, inherited by the members with `workspace = true`. One place to
+# bump a version.
+[workspace.dependencies]
+uuid = { version = "1", features = ["v4"] }
+clap = { version = "4", features = ["derive"] }
+thiserror = "2"
+anyhow = "1"
