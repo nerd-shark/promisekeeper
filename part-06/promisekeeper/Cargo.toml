@@ -1,0 +1,28 @@
+[package]
+name = "promisekeeper"
+description = "Part 6: the PromiseKeeper domain library (promise types, typed errors, retry policy, and the first async agent task on tokio)"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[dependencies]
+uuid.workspace = true
+# thiserror lives in the library: it derives the boilerplate for a typed error
+# enum (Display, Error, the source chain) without pulling a reporting style
+# into the domain. The library says what went wrong; it does not decide how the
+# message is printed.
+thiserror.workspace = true
+# New in Part 6. The library gains its first `async fn` (a simulated agent task
+# that awaits a timer), so it needs the runtime's timer. It does NOT need the
+# full runtime here: `time` is enough to express `tokio::time::sleep`. The
+# binary is what starts the runtime and spawns tasks; the library only awaits.
+tokio = { workspace = true, features = ["time"] }
+
+[dev-dependencies]
+# The async tests need a runtime to run on. `#[tokio::test]` (from `macros`)
+# spins up a small current-thread runtime per test; `rt` provides it.
+# `test-util` adds `start_paused`, which gives the tests a VIRTUAL clock: a
+# `tokio::time::sleep` inside the code under test completes instantly in test
+# time, so a one-second backoff is asserted in zero wall time. These are
+# test-only, so they do not bloat the library's own dependency surface.
+tokio = { workspace = true, features = ["rt", "macros", "time", "test-util"] }

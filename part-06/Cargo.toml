@@ -1,0 +1,41 @@
+# Part 6: the cargo workspace, evolved from Part 5 by adding exactly one thing:
+# an async runtime.
+#
+# Rust ships the async *language feature* (`async`/`.await`, the `Future`
+# trait) in the standard library, but it does NOT ship a runtime to drive those
+# futures to completion. That is a deliberate design choice: an embedded target
+# and a 64-core server want very different schedulers, so the language leaves
+# the executor to a library. For PromiseKeeper, that library is tokio, the
+# de-facto standard async runtime for Rust.
+#
+# This is the only new dependency. `rt-multi-thread` gives us the work-stealing
+# scheduler, `macros` gives us `#[tokio::main]` and `tokio::select!` (the latter
+# lands in Part 8), and `time` gives us `tokio::time::sleep`, the async drop-in
+# for the `std::thread::sleep` closure the retry driver used in Part 5. The
+# retry *policy* types from Part 5 carry over unchanged; only the sleeping
+# becomes asynchronous.
+#
+# The thiserror / anyhow split from Part 4 still holds:
+#   thiserror -> typed, structured errors in the `promisekeeper` library crate.
+#   anyhow    -> friendly, contextual error reporting at the `pk` CLI boundary.
+[workspace]
+resolver = "2"
+members = ["promisekeeper", "pk"]
+
+[workspace.package]
+edition = "2021"
+version = "0.1.0"
+license = "MIT"
+
+# Declared once, inherited by the members with `workspace = true`. One place to
+# bump a version.
+[workspace.dependencies]
+uuid = { version = "1", features = ["v4"] }
+clap = { version = "4", features = ["derive"] }
+thiserror = "2"
+anyhow = "1"
+# New in Part 6. Only the features this chapter needs: the multi-threaded
+# runtime, the macros (`#[tokio::main]`), and the timer (`tokio::time::sleep`).
+# Pulling features in explicitly keeps the compile honest about what the engine
+# actually uses.
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time"] }

@@ -1,0 +1,27 @@
+[package]
+name = "pk"
+description = "Part 6: the pk command-line interface for PromiseKeeper, now running on the tokio async runtime"
+edition.workspace = true
+version.workspace = true
+license.workspace = true
+
+[[bin]]
+name = "pk"
+path = "src/main.rs"
+
+[dependencies]
+promisekeeper = { path = "../promisekeeper" }
+clap.workspace = true
+# anyhow lives at the binary boundary, not in the library. It carries any error
+# plus human-readable context and prints a tidy report on exit.
+anyhow.workspace = true
+# New in Part 6. The binary is where the runtime actually starts: `#[tokio::main]`
+# (needs `macros`) builds a multi-threaded runtime (`rt-multi-thread`) and runs
+# `main` on it, and `tokio::spawn` + `tokio::time` drive the concurrent demo.
+# The library only awaits; the binary owns the runtime.
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time"] }
+
+[dev-dependencies]
+# `test-util` adds the virtual clock (`start_paused`) the concurrent-command
+# test uses, so the staggered think-times complete instantly in test time.
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time", "test-util"] }
